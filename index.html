@@ -108,6 +108,62 @@
       }
       .btn-whatsapp:hover{ transform:scale(1.08); box-shadow:0 0 40px rgba(37,211,102,1); }
     }
+
+    /* === OVERRIDES: hacer el GATE más grande y visible === */
+    .gate{
+      max-width: 720px;            /* antes 560px */
+      padding: 22px 18px;          /* más “aire” */
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 16px;
+    }
+    .gate h4{
+      font-size: 1.35rem;          /* título más grande */
+      letter-spacing: .2px;
+    }
+    .gate .opts{
+      display: flex;
+      flex-wrap: wrap;             /* por si no entra en una línea */
+      gap: 14px 12px;
+      justify-content: center;
+      margin: 12px 0 10px;
+    }
+    .gate label{
+      font-size: 1.15rem;          /* más grande el texto de cada opción */
+      padding: 14px 18px;          /* más área clickeable */
+      border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      transition: box-shadow .2s ease, background .2s ease, transform .05s ease;
+    }
+    .gate label:active{ transform: scale(.98); }
+    .gate label.active{
+      background: rgba(255,255,255,.14);
+      box-shadow: 0 0 0 2px rgba(37,211,102,.55), 0 6px 18px rgba(0,0,0,.25);
+    }
+    .gate input[type="radio"],
+    .gate input[type="checkbox"]{
+      transform: scale(1.35);      /* agranda radios y checkbox */
+      accent-color: #25d366;       /* colorcito WhatsApp */
+    }
+    .gate .legal{ font-size: 1rem; }
+    .gate button{
+      font-size: 1.25rem;          /* botón Continuar más grande */
+      padding: 16px 18px;
+      border-radius: 12px;
+    }
+    @media (max-width:600px){
+      .gate{
+        max-width: 92vw;
+        padding: 18px 14px;
+      }
+      .gate h4{ font-size: 1.25rem; }
+      .gate label{ font-size: 1.1rem; padding: 12px 14px; }
+      .gate button{ font-size: 1.2rem; padding: 14px 16px; }
+    }
+    @media (min-width:601px){
+      .gate h4{ font-size: 1.6rem; }
+      .gate label{ font-size: 1.2rem; padding: 14px 20px; }
+      .gate button{ font-size: 1.28rem; padding: 18px 20px; }
+    }
   </style>
 </head>
 <body>
@@ -115,7 +171,6 @@
   <div class="oferta">¡OFERTA POR TIEMPO LIMITADO!</div>
 
   <img class="logo" src="img/joker.png" alt="Payaso Joker’s Jewels">
-
 
   <div class="bono">¡SUPER BONO +150% EN TU PRIMER DEPOSITO!</div>
   <div class="retiros">RETIROS SIN LÍMITES</div>
@@ -152,6 +207,12 @@
     document.querySelectorAll('input[name="juego"]').forEach(r=>{
       r.addEventListener('change', ()=>{
         selected = document.querySelector('input[name="juego"]:checked')?.value || null;
+
+        // Resaltar visualmente la opción elegida
+        document.querySelectorAll('.gate .opts label').forEach(l=>{
+          l.classList.toggle('active', l.querySelector('input').checked);
+        });
+
         toggleContinue();
       });
     });
