@@ -43,7 +43,6 @@
       animation:zoomIn 1s ease forwards; opacity:0; transform:scale(.8); margin-top:-10px; }
     @keyframes zoomIn{ to{ opacity:1; transform:scale(1);} }
 
-    .vip{ font-size:2rem; font-weight:900; color:#fff; text-shadow:2px 2px 5px rgba(0,0,0,.7); margin-bottom:15px; }
     .bono{ font-size:2.8rem; font-weight:900; color:#ffcc00; transform:rotate(-3deg);
       text-shadow:2px 2px 8px rgba(255,204,0,.8); margin-bottom:10px; }
     .retiros{ font-size:1.8rem; font-weight:700; color:#00ff88; text-shadow:2px 2px 5px rgba(0,0,0,.6); margin-bottom:15px; }
@@ -62,7 +61,7 @@
     .gate .legal{ font-size:.86rem; opacity:.85; margin-top:6px; }
     .gate button{
       width:100%; margin-top:10px; padding:12px 14px; border:1px solid rgba(255,255,255,.12); border-radius:10px;
-      background:#111; color:#bbb; font-weight:800; cursor:not-allowed; opacity:.7;
+      background:#121212; color:#bfbfbf; font-weight:800; cursor:not-allowed; opacity:.7;
       transition:opacity .2s ease, box-shadow .2s ease, transform .1s ease, background .2s ease, color .2s ease, border-color .2s ease;
     }
     .gate button.enabled{ cursor:pointer; opacity:1; }
@@ -82,7 +81,6 @@
     @media (max-width:600px){
       body{ padding-bottom:130px; }
       .logo{ width:260px; margin-top:-10px; }
-      .vip{ font-size:1.4rem; transform:rotate(0); }
       .bono{ font-size:2.6rem; transform:rotate(0); color:#ffcc00; }
       .retiros{ font-size:1.4rem; transform:rotate(0); }
       .instrucciones{ font-size:1.3rem; transform:rotate(0); margin-bottom:12px; }
@@ -94,7 +92,6 @@
     }
     @media (min-width:601px){
       .logo{ width:520px; }
-      .vip{ font-size:3.2rem; }
       .bono{ font-size:4rem; }
       .retiros{ font-size:2.8rem; }
       .instrucciones{ font-size:2.2rem; }
@@ -109,26 +106,20 @@
 
     /* === OVERRIDES: Gate más grande y botón Continuar con color al activarse === */
     .gate{
-      max-width: 720px;            /* antes 560px */
-      padding: 22px 18px;          /* más “aire” */
+      max-width: 720px;
+      padding: 22px 18px;
       border: 1px solid rgba(255,255,255,.22);
       border-radius: 16px;
     }
     .gate h4{
-      font-size: 1.35rem;          /* título más grande */
+      font-size: 1.35rem;
       letter-spacing: .2px;
     }
     .gate .opts{
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px 12px;
-      justify-content: center;
-      margin: 12px 0 10px;
+      display: flex; flex-wrap: wrap; gap: 14px 12px; justify-content: center; margin: 12px 0 10px;
     }
     .gate label{
-      font-size: 1.15rem;
-      padding: 14px 18px;
-      border-radius: 14px;
+      font-size: 1.15rem; padding: 14px 18px; border-radius: 14px;
       background: rgba(255,255,255,.08);
       transition: box-shadow .2s ease, background .2s ease, transform .05s ease;
     }
@@ -144,15 +135,9 @@
     }
     .gate .legal{ font-size: 1rem; }
 
-    /* Botón Continuar: estado habilitado NOTORIO pero sutil */
-    .gate button{
-      font-size: 1.25rem;
-      padding: 16px 18px;
-      border-radius: 12px;
-      background:#121212; color:#bfbfbf; /* disabled look */
-    }
+    .gate button{ font-size: 1.25rem; padding: 16px 18px; border-radius: 12px; }
     .gate button.enabled{
-      background: linear-gradient(135deg, rgba(37,211,102,.18), rgba(30,188,91,.18)); /* verde translúcido */
+      background: linear-gradient(135deg, rgba(37,211,102,.18), rgba(30,188,91,.18));
       color:#fff;
       border-color: rgba(37,211,102,.55);
       box-shadow: 0 0 0 2px rgba(37,211,102,.25), 0 8px 24px rgba(0,0,0,.35);
@@ -167,10 +152,7 @@
     }
 
     @media (max-width:600px){
-      .gate{
-        max-width: 92vw;
-        padding: 18px 14px;
-      }
+      .gate{ max-width: 92vw; padding: 18px 14px; }
       .gate h4{ font-size: 1.25rem; }
       .gate label{ font-size: 1.1rem; padding: 12px 14px; }
       .gate button{ font-size: 1.2rem; padding: 14px 16px; }
@@ -212,8 +194,8 @@
 
   <script>
   (function(){
-    // 👉 Reemplazá por tu número con código de país (sin "+")
-    var PHONE = '54911XXXXXXXX';
+    // Tu número con país, sin "+" ni espacios:
+    var PHONE = '5492234248903';
 
     var $ = s => document.querySelector(s);
     var qs = new URLSearchParams(location.search);
@@ -248,11 +230,17 @@
         if(window.fbq) fbq('trackCustom','GatePassed',{ juego: selected || '' });
       } catch(e){}
 
-      var utmString = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
-        .map(k => k+'='+(qs.get(k)||'')).join('&');
-      var fbclid = qs.get('fbclid') || '';
-      var text = `Hola! Vengo por el BONO150. Juego: ${selected||''}. ${utmString} fbclid=${fbclid}`;
-      var wa = `https://wa.me/${5492234248903}?text=${encodeURIComponent(text)}`;
+      // Armar solo los parámetros que existan (sin vacíos)
+      const keys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+      const pairs = keys.filter(k => qs.get(k)).map(k => `${k}=${qs.get(k)}`);
+      const fbclidVal = qs.get('fbclid');
+      if (fbclidVal) pairs.push(`fbclid=${fbclidVal}`);
+
+      // Sufijo opcional con referencia (solo si hay algo)
+      const suffix = pairs.length ? `\nRef: ${pairs.join('&')}` : '';
+
+      const text = `Hola! Vengo por el BONO150. Juego: ${selected||''}.${suffix}`;
+      const wa = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
 
       var btn = $('#wa-btn');
       btn.href = wa;
@@ -273,11 +261,12 @@
           utm_term: qs.get('utm_term') || ''
         });
       } catch(e){}
-      // Si querés conservar el "Lead" además del custom, descomentá la línea de abajo:
+      // Si querés conservar el "Lead" además del custom, descomentá:
       // if(window.fbq) fbq('track','Lead', {value:1.00, currency:'USD'});
     });
   })();
   </script>
 </body>
 </html>
+
 
