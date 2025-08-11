@@ -26,195 +26,88 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif; }
+
+    body{
+      background: linear-gradient(rgba(0,0,0,.93), rgba(0,0,0,.93)), url('img/fondo.jpg') no-repeat center/cover;
+      color:#fff; min-height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;
+      text-align:center; padding:20px; position:relative;
     }
 
-    body {
-      background: linear-gradient(rgba(0, 0, 0, 0.93), rgba(0, 0, 0, 0.93)),
-                  url('img/fondo.jpg') no-repeat center center/cover;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-      position: relative;
+    .oferta{
+      position:absolute; top:20px; right:20px; background:#ff0000; color:#fff; font-weight:bold;
+      padding:10px 24px; border-radius:30px; transform:rotate(10deg); font-size:1rem; box-shadow:0 2px 8px rgba(0,0,0,.5); z-index:10;
     }
 
-    .oferta {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: #ff0000;
-      color: white;
-      font-weight: bold;
-      padding: 10px 24px;
-      border-radius: 30px;
-      transform: rotate(10deg);
-      font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-      z-index: 10;
-    }
+    .logo{ width:300px; max-width:85vw; margin-bottom:30px; filter:drop-shadow(0 0 15px #ffcc00);
+      animation:zoomIn 1s ease forwards; opacity:0; transform:scale(.8); margin-top:-10px; }
+    @keyframes zoomIn{ to{ opacity:1; transform:scale(1);} }
 
-    .logo {
-      width: 300px;
-      max-width: 85vw;
-      margin-bottom: 30px;
-      filter: drop-shadow(0 0 15px #ffcc00);
-      animation: zoomIn 1s ease forwards;
-      opacity: 0;
-      transform: scale(0.8);
-      margin-top: -10px;
-    }
+    .vip{ font-size:2rem; font-weight:900; color:#fff; text-shadow:2px 2px 5px rgba(0,0,0,.7); margin-bottom:15px; }
+    .bono{ font-size:2.8rem; font-weight:900; color:#ffcc00; transform:rotate(-3deg);
+      text-shadow:2px 2px 8px rgba(255,204,0,.8); margin-bottom:10px; }
+    .retiros{ font-size:1.8rem; font-weight:700; color:#00ff88; text-shadow:2px 2px 5px rgba(0,0,0,.6); margin-bottom:15px; }
+    .instrucciones{ font-size:1.8rem; font-weight:900; color:#fff; text-shadow:2px 2px 5px rgba(0,0,0,.7); margin-bottom:18px; }
 
-    @keyframes zoomIn {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+    /* Gate de intención */
+    .gate{
+      width:100%; max-width:560px; margin:0 auto 16px; padding:14px;
+      background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.12);
+      border-radius:14px; backdrop-filter: blur(3px);
     }
-
-    .vip {
-      font-size: 2rem;
-      font-weight: 900;
-      color: #ffffff;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      margin-bottom: 15px;
+    .gate h4{ font-size:1.05rem; margin-bottom:8px; }
+    .gate .opts{ display:flex; gap:10px; justify-content:center; margin:8px 0 6px; }
+    .gate label{ display:inline-flex; gap:6px; align-items:center; background:rgba(255,255,255,.06);
+      padding:8px 12px; border-radius:10px; cursor:pointer; }
+    .gate .legal{ font-size:.86rem; opacity:.85; margin-top:6px; }
+    .gate button{
+      width:100%; margin-top:10px; padding:12px 14px; border:0; border-radius:10px;
+      background:#111; color:#fff; font-weight:800; cursor:not-allowed; opacity:.6;
+      transition:opacity .2s ease;
     }
+    .gate button.enabled{ cursor:pointer; opacity:1; }
 
-    .bono {
-      font-size: 2.8rem;
-      font-weight: 900;
-      color: #ffcc00;
-      transform: rotate(-3deg);
-      text-shadow: 2px 2px 8px rgba(255,204,0,0.8);
-      margin-bottom: 10px;
-    }
-
-    .retiros {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #00ff88;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
-      margin-bottom: 15px;
-    }
-
-    .instrucciones {
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: #ffffff;
-      text-shadow: 2px 2px 5px rgba(0,0,0,0.7);
-      margin-bottom: 30px;
-    }
-
-    .btn-whatsapp {
-      display: inline-block;
-      background: #25d366;
-      color: white;
-      padding: 24px 50px;
-      font-size: 2.2rem;
-      font-weight: 900;
-      text-decoration: none;
-      border-radius: 50px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease-in-out;
+    /* Botón WhatsApp */
+    .btn-whatsapp{
+      display:none; background:#25d366; color:#fff; padding:24px 50px; font-size:2.2rem; font-weight:900;
+      text-decoration:none; border-radius:50px; box-shadow:0 4px 20px rgba(0,0,0,.5);
+      transition:transform .2s ease-in-out;
+      /* Animación solo desktop; en mobile se desactiva para que no se mueva */
       animation: float 2.5s ease-in-out infinite;
     }
+    .btn-whatsapp:hover{ transform:scale(1.08); }
+    @keyframes float{ 0%{transform:translateY(0);} 50%{transform:translateY(-6px);} 100%{transform:translateY(0);} }
 
-    .btn-whatsapp:hover {
-      transform: scale(1.08);
+    /* Mensaje +18/TyC */
+    .disclaimer{ margin-top:10px; font-size:.9rem; opacity:.8; }
+
+    @media (max-width:600px){
+      body{ padding-bottom:130px; }
+      .logo{ width:260px; margin-top:-10px; }
+      .vip{ font-size:1.4rem; transform:rotate(0); }
+      .bono{ font-size:2.6rem; transform:rotate(0); color:#ffcc00; }
+      .retiros{ font-size:1.4rem; transform:rotate(0); }
+      .instrucciones{ font-size:1.3rem; transform:rotate(0); margin-bottom:12px; }
+      .btn-whatsapp{
+        position:fixed; bottom:20px; right:20px; padding:16px 36px; font-size:1.4rem; z-index:999;
+        animation:none; /* importante: no se mueve en mobile */
+      }
+      .gate{ padding:12px; }
     }
-
-    @keyframes float {
-      0% { transform: translateY(0); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0); }
+    @media (min-width:601px){
+      .logo{ width:520px; }
+      .vip{ font-size:3.2rem; }
+      .bono{ font-size:4rem; }
+      .retiros{ font-size:2.8rem; }
+      .instrucciones{ font-size:2.2rem; }
+      .btn-whatsapp{
+        font-size:3.6rem; padding:30px 70px; border-radius:60px;
+        box-shadow:0 0 30px rgba(37,211,102,.8);
+        background:linear-gradient(145deg,#25d366,#1ebc5b);
+        transition:all .3s ease-in-out;
+      }
+      .btn-whatsapp:hover{ transform:scale(1.08); box-shadow:0 0 40px rgba(37,211,102,1); }
     }
-
-    @media (max-width: 600px) {
-      body {
-        padding-bottom: 130px;
-      }
-
-      .logo {
-        width: 260px;
-        margin-top: -10px;
-      }
-
-      .vip {
-        font-size: 1.4rem;
-        transform: rotate(0deg);
-      }
-
-      .bono {
-        font-size: 2.6rem;
-        transform: rotate(0deg);
-        color: #ffcc00;
-      }
-
-      .retiros {
-        font-size: 1.4rem;
-        transform: rotate(0deg);
-      }
-
-      .instrucciones {
-        font-size: 1.4rem;
-        transform: rotate(0deg);
-      }
-
-      .btn-whatsapp {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        padding: 16px 36px;
-        font-size: 1.4rem;
-        z-index: 999;
-        animation: none;
-      }
-    }
-
-    @media (min-width: 601px) {
-      .logo {
-        width: 520px;
-      }
-
-      .vip {
-        font-size: 3.2rem;
-      }
-
-      .bono {
-        font-size: 4rem;
-      }
-
-      .retiros {
-        font-size: 2.8rem;
-      }
-
-      .instrucciones {
-        font-size: 2.6rem;
-      }
-
-      .btn-whatsapp {
-        font-size: 3.6rem;
-        padding: 30px 70px;
-        border-radius: 60px;
-        box-shadow: 0 0 30px rgba(37, 211, 102, 0.8);
-        background: linear-gradient(145deg, #25d366, #1ebc5b);
-        transition: all 0.3s ease-in-out;
-      }
-
-      .btn-whatsapp:hover {
-        transform: scale(1.08);
-        box-shadow: 0 0 40px rgba(37, 211, 102, 1);
-      }
-    }
-
   </style>
 </head>
 <body>
@@ -226,12 +119,86 @@
   <div class="vip">ACCESO VIP EXCLUSIVO</div>
   <div class="bono">¡SUPER BONO EN TU PRIMER DEPOSITO!</div>
   <div class="retiros">RETIROS SIN LÍMITES</div>
-  <div class="instrucciones">ESCRIBINOS APRETANDO EL BOTÓN DE ABAJO</div>
+  <div class="instrucciones">Escribinos para reclamar tu bono</div>
 
-  <a href="https://w.app/ip4avm" target="_blank" class="btn-whatsapp"
-     onclick="fbq('track', 'Lead', {value: 1.00, currency: 'USD'});">
+  <!-- GATE DE INTENCIÓN (+18 + elección) -->
+  <div class="gate" id="gate">
+    <h4>Elegí lo que te interesa y confirmá que sos +18</h4>
+    <div class="opts">
+      <label><input type="radio" name="juego" value="Casino"> Casino</label>
+      <label><input type="radio" name="juego" value="Slots"> Slots</label>
+    </div>
+    <label class="legal"><input type="checkbox" id="mayor"> Soy mayor de 18 y acepto Términos y Condiciones</label>
+    <button id="continuar" disabled>Continuar</button>
+    <div class="disclaimer">Juego para mayores de 18. Jugar con responsabilidad.</div>
+  </div>
+
+  <!-- BOTÓN WHATSAPP (se muestra después del gate) -->
+  <a id="wa-btn" class="btn-whatsapp" href="#" target="_blank" rel="noopener">
     💬 OBTENER MI BONO AHORA
   </a>
 
+  <script>
+  (function(){
+    // 👉 Reemplazá por tu número con código de país (sin "+")
+    var PHONE = '54911XXXXXXXX';
+
+    var $ = s => document.querySelector(s);
+    var qs = new URLSearchParams(location.search);
+
+    // Habilitar botón "Continuar" sólo cuando hay selección + mayor de 18
+    var selected = null;
+    document.querySelectorAll('input[name="juego"]').forEach(r=>{
+      r.addEventListener('change', ()=>{
+        selected = document.querySelector('input[name="juego"]:checked')?.value || null;
+        toggleContinue();
+      });
+    });
+    $('#mayor').addEventListener('change', toggleContinue);
+
+    function toggleContinue(){
+      var ok = !!selected && $('#mayor').checked;
+      var btn = $('#continuar');
+      btn.disabled = !ok;
+      btn.classList.toggle('enabled', ok);
+    }
+
+    // Click en "Continuar": arma el enlace de WhatsApp y muestra el botón
+    $('#continuar').addEventListener('click', function(){
+      // Track del gate pasado
+      try {
+        if(window.fbq) fbq('trackCustom','GatePassed',{ juego: selected || '' });
+      } catch(e){}
+
+      var utmString = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
+        .map(k => k+'='+(qs.get(k)||'')).join('&');
+      var fbclid = qs.get('fbclid') || '';
+      var text = `Hola! Vengo por el BONO150. Juego: ${selected||''}. ${utmString} fbclid=${fbclid}`;
+      var wa = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
+
+      var btn = $('#wa-btn');
+      btn.href = wa;
+      btn.style.display = 'inline-block';
+      btn.scrollIntoView({ behavior:'smooth', block:'center' });
+    });
+
+    // Click real en WhatsApp
+    $('#wa-btn').addEventListener('click', function(){
+      try {
+        if(window.fbq) fbq('trackCustom','WhatsAppClick', {
+          juego: selected || '',
+          fbclid: qs.get('fbclid') || '',
+          utm_source: qs.get('utm_source') || '',
+          utm_medium: qs.get('utm_medium') || '',
+          utm_campaign: qs.get('utm_campaign') || '',
+          utm_content: qs.get('utm_content') || '',
+          utm_term: qs.get('utm_term') || ''
+        });
+      } catch(e){}
+      // Si querés conservar el "Lead" además del custom, descomentá la línea de abajo:
+      // if(window.fbq) fbq('track','Lead', {value:1.00, currency:'USD'});
+    });
+  })();
+  </script>
 </body>
 </html>
