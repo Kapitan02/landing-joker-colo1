@@ -150,18 +150,6 @@
       outline: none;
       box-shadow: 0 0 0 3px rgba(255,255,255,.35), 0 0 0 6px rgba(37,211,102,.35);
     }
-
-    @media (max-width:600px){
-      .gate{ max-width: 92vw; padding: 18px 14px; }
-      .gate h4{ font-size: 1.25rem; }
-      .gate label{ font-size: 1.1rem; padding: 12px 14px; }
-      .gate button{ font-size: 1.2rem; padding: 14px 16px; }
-    }
-    @media (min-width:601px){
-      .gate h4{ font-size: 1.6rem; }
-      .gate label{ font-size: 1.2rem; padding: 14px 20px; }
-      .gate button{ font-size: 1.28rem; padding: 18px 20px; }
-    }
   </style>
 </head>
 <body>
@@ -223,23 +211,15 @@
       btn.classList.toggle('enabled', ok);
     }
 
-    // Click en "Continuar": arma el enlace de WhatsApp y muestra el botón
+    // Click en "Continuar": arma el enlace de WhatsApp (SIN UTM/fbclid en el texto) y muestra el botón
     $('#continuar').addEventListener('click', function(){
       // Track del gate pasado
       try {
         if(window.fbq) fbq('trackCustom','GatePassed',{ juego: selected || '' });
       } catch(e){}
 
-      // Armar solo los parámetros que existan (sin vacíos)
-      const keys = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
-      const pairs = keys.filter(k => qs.get(k)).map(k => `${k}=${qs.get(k)}`);
-      const fbclidVal = qs.get('fbclid');
-      if (fbclidVal) pairs.push(`fbclid=${fbclidVal}`);
-
-      // Sufijo opcional con referencia (solo si hay algo)
-      const suffix = pairs.length ? `\nRef: ${pairs.join('&')}` : '';
-
-      const text = `Hola! Vengo por el BONO100. Juego: ${selected||''}.${suffix}`;
+      // ✅ Mensaje limpio (sin UTM / fbclid)
+      const text = `Hola! Vengo por el BONO100. Juego: ${selected||''}.`;
       const wa = `https://wa.me/${PHONE}?text=${encodeURIComponent(text)}`;
 
       var btn = $('#wa-btn');
@@ -248,7 +228,7 @@
       btn.scrollIntoView({ behavior:'smooth', block:'center' });
     });
 
-    // Click real en WhatsApp
+    // Click real en WhatsApp → enviamos a Meta el evento con UTMs/fbclid (para análisis) **pero no van al chat**
     $('#wa-btn').addEventListener('click', function(){
       try {
         if(window.fbq) fbq('trackCustom','WhatsAppClick', {
@@ -261,12 +241,11 @@
           utm_term: qs.get('utm_term') || ''
         });
       } catch(e){}
-      // Si querés conservar el "Lead" además del custom, descomentá:
+      // Si querés sumar un estándar también:
       // if(window.fbq) fbq('track','Lead', {value:1.00, currency:'USD'});
     });
   })();
   </script>
 </body>
 </html>
-
 
